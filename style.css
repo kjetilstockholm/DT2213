@@ -1,0 +1,114 @@
+:root {
+  --slidev-theme-primary: #1954a6; /* KTH Blå */
+  --slidev-theme-accent: #1954a6;
+}
+
+
+
+/* 1. Nollställ slide-ytan för att få mer plats */
+.slidev-layout {
+  padding: 1.5rem 1.5rem; /* Lagom luft vid kanterna */
+/*  display: block;    /* Tar bort "center"-effekten som standard */
+}
+
+/* 2. Fixa rubriken (#) - Liten, uppe till vänster, KTH-stil */
+h1 {
+  @apply text-xl mb-0; 
+  color: var(--slidev-theme-primary);
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #eee; /* En diskret linje under rubriken */
+  padding-bottom: 0.2rem;
+  margin-top: 0 !important;
+}
+
+/* 3. Fixa underrubriken (##) */
+h2 {
+  @apply text-base opacity-60 font-normal;
+  margin-top: 0.2rem !important;
+}
+
+/* 4. Gör din 15-lagers-figur responsiv */
+.figure-container {
+  @apply relative mx-auto mt-4;
+  height: 75%; /* Ger plats åt rubriken och din footer */
+  width: 100%;
+}
+
+.figure-container img {
+  @apply absolute inset-0 h-full w-full object-contain;
+}
+
+/* 5. Justera listor och brödtext */
+p, li {
+  @apply text-lg;
+  line-height: 1.6;
+}
+
+
+
+/* 1. Grundläge: Allt som INTE har klickats än syns i 30% */
+.step-container {
+  transition: all 0.6s ease;
+  filter: grayscale(1);
+  opacity: 0.2 !important;
+  visibility: visible !important;
+}
+
+/* 2. AKTIVT STEG: Full färg och 100% styrka */
+/* Vi lägger till div framför för att öka "styrkan" i regeln */
+div.step-container.slidev-vclick-current {
+  filter: grayscale(0);
+  opacity: 1 !important;
+  transform: scale(1.05);
+  z-index: 50;
+}
+
+/* 3. PASSERADE STEG: Stanna på 90% gråskala */
+/* Denna regel körs när du klickat förbi steget */
+div.step-container.slidev-vclick-prior {
+  filter: grayscale(1);
+  opacity: 0.7 !important;
+  transform: scale(1);
+  z-index: 10;
+}
+
+/* 4. Subtila Annoteringar */
+.annotation {
+  @apply absolute border-l border-emerald-500/50 pl-1 leading-tight transition-all duration-500;
+}
+
+<style>
+.annotation-text {
+  /* Tvinga extremt liten text */
+  font-size: 7px !important; 
+  line-height: 1 !important;
+  display: block;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Logik för att behålla annoteringar men göra dem extremt subtila när de inte är aktiva */
+.step-container.slidev-vclick-hidden .annotation {
+  opacity: 0; /* Helt dolda innan klick */
+}
+
+.step-container.slidev-vclick-current .annotation {
+  opacity: 1;
+  @apply border-emerald-500;
+}
+
+.step-container.slidev-vclick-current .annotation-text {
+  @apply text-emerald-500 font-bold;
+}
+
+.step-container.slidev-vclick-prior .annotation {
+  opacity: 0.4; /* Stannar kvar men mycket diskret */
+  @apply border-gray-400;
+}
+
+.step-container.slidev-vclick-prior .annotation-text {
+  @apply text-gray-400;
+}
